@@ -17,6 +17,12 @@ type AdvertisementRequest struct {
 	Price       float64 `json:"price" validate:"required"`
 	IsActive    bool    `json:"is_active"`
 }
+type AdvertisementUpdateRequest struct {
+	Title       string  `json:"title" validate:"omitempty"`
+	Description string  `json:"description" validate:"omitempty"`
+	Price       float64 `json:"price" validate:"omitempty"`
+	IsActive    bool    `json:"is_active"`
+}
 
 type AdvertisementService struct {
 	Repo     *repositories.AdvertisementRepository
@@ -41,6 +47,7 @@ func (s *AdvertisementService) GetAdvertisementsPage(page, pageSize int, sortBy,
 	}
 
 	validSortOrders := map[string]bool{"asc": true, "desc": true}
+	
 	if !validSortOrders[strings.ToLower(sortOrder)] {
 		return nil, errors.New("invalid sortOrder parameter")
 	}
@@ -76,12 +83,13 @@ func (s *AdvertisementService) CreateAdvertisement(newAdvertisement *Advertiseme
 		Price:       newAdvertisement.Price,
 		IsActive:    newAdvertisement.IsActive,
 	}
+	
 
 	return s.Repo.Create(&ad)
 }
 
 
-func (s *AdvertisementService) UpdateAdvertisement(id int, updatedAdvertisement *AdvertisementRequest) error {
+func (s *AdvertisementService) UpdateAdvertisement(id int, updatedAdvertisement *AdvertisementUpdateRequest) error {
 	
 	if err := s.validate.Struct(updatedAdvertisement); err != nil {
 		return s.validationError(err)
@@ -105,6 +113,7 @@ func (s *AdvertisementService) UpdateAdvertisement(id int, updatedAdvertisement 
 		existingAd.Price = updatedAdvertisement.Price
 	}
 
+	
 	return s.Repo.Update(id, existingAd)
 }
 

@@ -1,6 +1,7 @@
 package http
 
 import (
+	"log"
 	"net/http"
 	"strconv"
 
@@ -84,13 +85,15 @@ func (h *AdvertisementHandler) UpdateAdvertisement(c *gin.Context) {
 		return
 	}
 
-	var updatedAdvertisement usecases.AdvertisementRequest
+	var updatedAdvertisement usecases.AdvertisementUpdateRequest
 	if err := c.ShouldBindJSON(&updatedAdvertisement); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input data"})
 		return
 	}
 
 	if err := h.Service.UpdateAdvertisement(id, &updatedAdvertisement); err != nil {
+
+	log.Printf("Error updating advertisement: %v\n", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
 		return
 	}

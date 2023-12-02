@@ -90,8 +90,9 @@ func (r *AdvertisementRepository) GetByID(id int) (*entities.Advertisement, erro
 }
 
 func (r *AdvertisementRepository) Create(advertisement *entities.Advertisement) error {
-	_, err := r.DB.Exec("INSERT INTO advertisements (title, description, price, created_at, is_active) VALUES (?, ?, ?, ?, ?)",
-		advertisement.Title, advertisement.Description, advertisement.Price, advertisement.CreatedAt, advertisement.IsActive)
+	log.Printf("%s",advertisement.Description)
+	_, err := r.DB.Exec("INSERT INTO advertisements (title, description, price, is_active) VALUES (?, ?, ?, ?)",
+		advertisement.Title, advertisement.Description, advertisement.Price, advertisement.IsActive)
 	if err != nil {
 		log.Printf("Error inserting advertisement: %v\n", err)
 		return err
@@ -101,8 +102,8 @@ func (r *AdvertisementRepository) Create(advertisement *entities.Advertisement) 
 }
 
 func (r *AdvertisementRepository) Update(id int, advertisement *entities.Advertisement) error {
-	_, err := r.DB.Exec("UPDATE advertisements SET title=?, description=?, price=?, created_at=?, is_active=? WHERE id=?",
-		advertisement.Title, advertisement.Description, advertisement.Price, advertisement.CreatedAt, advertisement.IsActive, id)
+	_, err := r.DB.Exec("UPDATE advertisements SET title=?, description=?, price=?, is_active=? WHERE id=?",
+		advertisement.Title, advertisement.Description, advertisement.Price, advertisement.IsActive, id)
 	if err != nil {
 		log.Printf("Error updating advertisement: %v\n", err)
 		return err
