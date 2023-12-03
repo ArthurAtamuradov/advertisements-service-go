@@ -2,7 +2,8 @@ version: "3"
 
 services:
   app:
-    image: advertisement_service
+    image: advertisement-service
+    restart: always
     ports:
       - "8080:8080"
     depends_on:
@@ -10,10 +11,16 @@ services:
 
   db:
     image: mysql:latest
+    restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: yourdb
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: advertisements
       MYSQL_USER: user
       MYSQL_PASSWORD: password
     ports:
       - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
