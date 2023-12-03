@@ -66,14 +66,29 @@ func loadConfig() {
 
 func connectDB() {
 	var err error
-	db, err = sql.Open("mysql", viper.GetString("database.url"))
+
+	db, err = sql.Open("mysql", viper.GetString("database.urlShort"))
+
 	if err != nil {
 		log.Fatalf("Error connecting to the database: %s", err)
 	}
 
 
-	if err := createDatabase(db, viper.GetString("database.name")); err != nil {
+	//creating database if it is not exsist
+
+	if err := createDatabase(db,viper.GetString("database.dbName") ); err != nil {
 		log.Fatal(err)
+	}
+
+	db.Close()
+
+	//reconnecting with database
+
+
+	db, err = sql.Open("mysql", viper.GetString("database.urlFull"))
+
+	if err != nil {
+		log.Fatalf("Error connecting to the database: %s", err)
 	}
 
 	if err := db.Ping(); err != nil {

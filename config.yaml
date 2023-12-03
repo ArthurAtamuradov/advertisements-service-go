@@ -3,5 +3,6 @@ server:
   port: 8080
 
 database:
-  url: "root:password@tcp(127.0.0.1:3306)/advertisements?parseTime=true"
-  name: "advertisements"
+  urlFull: "root:password@tcp(127.0.0.1:3306)/advertisements?parseTime=true"
+  urlShort: "root:password@tcp(127.0.0.1:3306)/"
+  dbName: "advertisements"
