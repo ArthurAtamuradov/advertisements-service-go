@@ -11,6 +11,7 @@ import (
 	"syscall"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	migrate "github.com/rubenv/sql-migrate"
 
 	"github.com/gin-gonic/gin"
@@ -41,6 +42,8 @@ func main() {
 	adHandler := ihttp.NewAdvertisementHandler(adService)
 
 	router := setupRouter(adHandler)
+	
+	router.GET("/metrics", gin.WrapH(promhttp.Handler()))
 
 	server := &http.Server{
 		Addr:    fmt.Sprintf(":%d", viper.GetInt("server.port")),
